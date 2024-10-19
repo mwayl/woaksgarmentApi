@@ -29,20 +29,20 @@ app.use(
     helmet({
         contentSecurityPolicy: {
             directives: {
-                "default-src": ["'self'", "data:"], // Allow default resources from your domain and data URIs
-                "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://trusted.cdn.com"], // Allow scripts from self and trusted CDN
-                "img-src": ["'self'", "data:", "https://wokegarments.com", "https://storage.googleapis.com", "https://shoprusset.com"], // Allow images from specified domains
-                "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Allow styles from Google Fonts
-                "font-src": ["'self'", "https://fonts.gstatic.com"], // Allow fonts from Google Fonts
-                "frame-ancestors": ["'none'"], // Prevent framing
-                "base-uri": ["'self'"], // Restrict base URIs
-                "form-action": ["'self'"], // Restrict form actions
+                "default-src": ["'self'", "data:"],
+                "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://trusted.cdn.com"],
+                "img-src": ["'self'", "data:", "https://wokegarments.com", "https://storage.googleapis.com", "https://shoprusset.com"],
+                "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+                "font-src": ["'self'", "https://fonts.gstatic.com"],
+                "connect-src": ["'self'", "https://woaksgarment-api.vercel.app", "https://wokegarments.com"], // Ensure to allow your frontend and backend
+                "frame-ancestors": ["'none'"],
+                "base-uri": ["'self'"],
+                "form-action": ["'self'"],
             },
-            useDefaults: true, // Use default directives
+            useDefaults: true,
         },
     })
 );
-
 // parse json request body
 app.use(express.json());
 
@@ -57,11 +57,19 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-app.use(cors());
-app.options('*', cors());
+const corsOptions = {
+    origin: 'https://wokegarments.com', // Allow requests from your frontend domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed methods
+    credentials: true, // Allow credentials (e.g., cookies, authorization headers)
+    optionsSuccessStatus: 200, // For legacy browser support
+};
 
-app.get('/', express.static(path.join(__dirname, '../my-app/build')));
-app.use(express.static(path.join(__dirname, '../my-app/build')));
+// Enable CORS with the specified options
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+app.get('/', express.static(path.join(__dirname, '../../my-app/build')));
+app.use(express.static(path.join(__dirname, '../../my-app/build')));
 // app.use(express.static(path.join(__dirname, 'my-app/build')));
 
 
@@ -78,7 +86,7 @@ if (config.env === 'production') {
 app.use('/v1', routes);
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../my-app/build/index.html'));
+    res.sendFile(path.join(__dirname, '../../my-app/build/index.html'));
 });
 
 
