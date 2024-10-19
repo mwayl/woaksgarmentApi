@@ -31,7 +31,7 @@ app.use(
             directives: {
                 "default-src": ["'self'", "data:"],
                 "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://trusted.cdn.com"],
-                "img-src": ["'self'", "data:", "https://wokegarments.com", "https://storage.googleapis.com", "https://shoprusset.com"],
+                "img-src": ["'self'", "data:", "https://wokegarments.com", "https://storage.googleapis.com", "https://shoprusset.com", "https://img.freepik.com"],
                 "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
                 "font-src": ["'self'", "https://fonts.gstatic.com"],
                 "connect-src": ["'self'", "https://woaksgarment-api.vercel.app", "https://wokegarments.com"], // Ensure to allow your frontend and backend
